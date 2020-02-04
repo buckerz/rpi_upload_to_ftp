@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DATE=$(date +"%Y-%m-%d_%H%M")
+
+raspistill -rot 180 -w 1280 -h 720 -q 90 -o /home/pi/camera/$DATE.jpg
+
+#change these parameters to fit your need
+
+IN_LOCAL=/home/pi/camera/$DATE.jpg
+OUT_REMOTE=$DATE.jpg
+
+USER=u256373350
+PASSWD=Wildtrack11!
+SERVERIP=153.92.6.138
+
+/usr/bin/ftp -v -n $SERVERIP <<END_OF_SESSION
+user $USER $PASSWD
+cd /camera
+prompt off
+binary
+put $IN_LOCAL $OUT_REMOTE
+bye
+END_OF_SESSION
